@@ -11,6 +11,16 @@
 
 ---
 
+## Project Summary
+
+NyayaFlow is a citizen-first grievance and appeal platform for public benefit and service issues in India. It combines a guided Next.js PWA with a deterministic FastAPI engine to help people diagnose common blockers, prepare the right evidence, route a complaint to the right department, track its progress, and respond when the problem is—or is not—resolved.
+
+The difference is simple but important: current grievance systems often measure success when a ticket is closed. For a citizen, closure is not the same as receiving a delayed payment, correcting a record, or getting a clear remedy. NyayaFlow makes that gap visible. It explains each decision in plain language, checks prerequisites before filing, keeps a tamper-evident timeline, and asks the citizen to confirm the outcome. If the issue remains unresolved or was sent to the wrong department, it generates a structured first appeal from the case history.
+
+Because its rules are explicit rather than probabilistic, NyayaFlow avoids opaque recommendations and hallucinated guidance. Its multilingual, voice-friendly, accessible PWA is designed for real-world use, including people who may struggle with complex forms or legal jargon. The result is a more transparent path from complaint to actual resolution.
+
+---
+
 ## 🇮🇳 The Silent Crisis: "Disposal ≠ Resolution"
 
 Every year, over **1.5 to 2 million grievances** are lodged on India's central grievance portals (CPGRAMS, EPFiGMS, PM-KISAN, State Samadhan). On paper, departments celebrate a **~95% disposal rate**.
@@ -276,4 +286,3 @@ For security, the **Department Officer Desk** requires government authentication
 ## 📜 License & Compliance
 
 NyayaFlow is built for the **BuildWhatMovesIndia** Hackathon. It uses open web standards, zero proprietary vendor lock-in, and adheres to DPDP (Digital Personal Data Protection) principles using privacy-safe synthetic data.
-

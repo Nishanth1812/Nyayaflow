@@ -1,19 +1,38 @@
 __pycache__/
 *.py[cod]
+*.egg-info/
 .pytest_cache/
 .venv/
+.coverage
+coverage.xml
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# Local configuration and data
 .env
-.env.local
-.env.*.local
+.env.*
+!.env.example
 *.pem
 *.key
-nyayaflow.db
+*.db
 *.db-journal
+*.sqlite*
+data/
 
-# Next.js
+# Deployment and frontend output
+.vercel/
+
 web/node_modules/
 web/.next/
 web/out/
 web/coverage/
 web/.turbo/
-web/*.tsbuildinfo
+*.tsbuildinfo
+
+# Logs and local machine files
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
