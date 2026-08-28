@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, status
 
-from app.schemas import EvidenceCheckRequest, EvidenceCheckResponse
-from app.services.evidence_checker import check_evidence
+from backend.schemas import EvidenceCheckRequest, EvidenceCheckResponse
+from backend.services.evidence_checker import check_evidence
 
 
 router = APIRouter(tags=["evidence"])

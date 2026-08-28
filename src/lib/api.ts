@@ -15,17 +15,19 @@ import type {
  * API base resolution for Vercel combined deployment:
  * - Local dev (Next.js :3000 + FastAPI :8000): NEXT_PUBLIC_API_BASE=http://localhost:8000
  * - Vercel prod (same origin, vercel.json routes /health etc. → api/index.py):
- *   NEXT_PUBLIC_API_BASE=""  (empty string → relative fetch)
- *   The `??` check ensures empty string is preserved for same-origin.
+ *   leave NEXT_PUBLIC_API_BASE unset, which produces relative fetch URLs.
+ *   An explicit empty string also preserves same-origin requests.
  */
 const API_BASE = (() => {
   const envBase = process.env.NEXT_PUBLIC_API_BASE;
   if (envBase !== undefined) return envBase;
-  // Fallback: detect Vercel production domain on client
-  if (typeof window !== "undefined" && window.location.hostname.endsWith("vercel.app")) {
-    return "";
+  if (typeof window !== "undefined") {
+    const host = window.location.hostname;
+    if (host === "localhost" || host === "127.0.0.1" || host === "[::1]") {
+      return "http://localhost:8000";
+    }
   }
-  return "http://localhost:8000";
+  return "";
 })();
 
 /**

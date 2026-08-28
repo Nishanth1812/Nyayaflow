@@ -21,11 +21,11 @@ try:
 except ImportError:
     pass
 
-from app import models  # noqa: F401 -- registers SQLAlchemy tables
-from app.database import Base, SessionLocal, engine
-from app.routers import cases, diagnose, evidence, metrics, routing, rules
-from app.schemas import HealthResponse
-from app.seed import seed_database
+from backend import models  # noqa: F401 -- registers SQLAlchemy tables
+from backend.database import Base, SessionLocal, engine
+from backend.routers import cases, diagnose, evidence, metrics, routing, rules
+from backend.schemas import HealthResponse
+from backend.seed import seed_database
 
 
 logging.basicConfig(
@@ -202,4 +202,3 @@ app.include_router(rules.router)
 app.include_router(evidence.router)
 app.include_router(cases.router)
 app.include_router(metrics.router)
-

@@ -4,9 +4,9 @@ from sqlalchemy import create_engine, inspect
 from sqlalchemy.orm import Session
 from sqlalchemy.pool import StaticPool
 
-from app.database import Base
-from app.models import Case, CaseStatus, CitizenConfirmation
-from app.schemas import CaseResponse
+from backend.database import Base
+from backend.models import Case, CaseStatus, CitizenConfirmation
+from backend.schemas import CaseResponse
 
 
 def make_session() -> Session:

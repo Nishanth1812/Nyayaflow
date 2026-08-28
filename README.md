@@ -150,7 +150,7 @@ Generates print-ready formal grievance petitions and CPGRAMS First Appeals forma
 
 ```text
 nyayaflow/
-├── app/
+├── backend/
 │   ├── main.py          # FastAPI engine, CSP, X-Request-ID, security headers, rate limiter
 │   ├── database.py      # SQLite engine & SQLAlchemy session management
 │   ├── models.py        # Case model, SHA-256 hash-chain engine, lifecycle enums, SLA constants
@@ -195,7 +195,7 @@ pip install -r requirements.txt
 ### 2. Start the Platform
 
 ```powershell
-uvicorn app.main:app --reload
+uvicorn backend.main:app --reload
 ```
 
 ### 3. Open in Browser

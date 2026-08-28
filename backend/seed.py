@@ -4,7 +4,7 @@ from typing import Any
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.models import (
+from backend.models import (
     STATUS_MESSAGES,
     Case,
     CaseStatus,
@@ -12,8 +12,8 @@ from app.models import (
     GrievanceCategory,
     compute_chain_hash,
 )
-from app.services.appeal_generator import generate_appeal
-from app.services.diagnostic_engine import (
+from backend.services.appeal_generator import generate_appeal
+from backend.services.diagnostic_engine import (
     EPFO_DEPARTMENT,
     INCOME_TAX_DEPARTMENT,
     NSP_DEPARTMENT,

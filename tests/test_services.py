@@ -1,13 +1,13 @@
 import pytest
 
-from app.models import GrievanceCategory
-from app.services.diagnostic_engine import (
+from backend.models import GrievanceCategory
+from backend.services.diagnostic_engine import (
     DIAGNOSTIC_RULES,
     diagnose_answers,
     diagnose_category,
 )
-from app.services.evidence_checker import check_evidence
-from app.services.routing_engine import route_issue
+from backend.services.evidence_checker import check_evidence
+from backend.services.routing_engine import route_issue
 
 
 def valid_diagnostic_answers() -> dict[str, bool]:

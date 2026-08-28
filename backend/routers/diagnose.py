@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException
 
-from app.models import GrievanceCategory
-from app.schemas import CategoryDiagnosticRequest, DiagnosticRequest, DiagnosticResponse
-from app.services.diagnostic_engine import diagnose_answers, diagnose_category
+from backend.models import GrievanceCategory
+from backend.schemas import CategoryDiagnosticRequest, DiagnosticRequest, DiagnosticResponse
+from backend.services.diagnostic_engine import diagnose_answers, diagnose_category
 
 
 router = APIRouter(tags=["diagnostics"])

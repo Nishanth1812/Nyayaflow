@@ -2,7 +2,7 @@ import re
 from collections.abc import Sequence
 from typing import TypedDict
 
-from app.services.diagnostic_engine import (
+from backend.services.diagnostic_engine import (
     EPFO_DEPARTMENT,
     INCOME_TAX_DEPARTMENT,
     NREGA_DEPARTMENT,

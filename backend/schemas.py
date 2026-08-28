@@ -5,7 +5,7 @@ from typing import Annotated, Any
 from pydantic import BaseModel, ConfigDict, Field
 from pydantic.alias_generators import to_camel
 
-from app.models import CaseStatus, CitizenConfirmation, GrievanceCategory
+from backend.models import CaseStatus, CitizenConfirmation, GrievanceCategory
 
 
 ShortText = Annotated[str, Field(min_length=1, max_length=200)]

@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 
-from app.main import rate_limiter
+from backend.main import rate_limiter
 
 
 def test_rate_limit_blocks_after_threshold(client: TestClient) -> None:

@@ -3,7 +3,7 @@ from datetime import UTC, datetime, timedelta
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
-from app.models import (
+from backend.models import (
     STATUS_MESSAGES,
     Case,
     CaseStatus,

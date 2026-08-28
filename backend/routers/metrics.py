@@ -4,9 +4,9 @@ from fastapi import APIRouter, Depends
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.database import get_db
-from app.models import Case, CitizenConfirmation
-from app.schemas import MetricsResponse
+from backend.database import get_db
+from backend.models import Case, CitizenConfirmation
+from backend.schemas import MetricsResponse
 
 
 router = APIRouter(tags=["metrics"])

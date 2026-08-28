@@ -1,7 +1,7 @@
 from collections.abc import Mapping
 from typing import Any, NotRequired, TypedDict
 
-from app.models import GrievanceCategory
+from backend.models import GrievanceCategory
 
 
 PM_KISAN_DEPARTMENT = "Ministry of Agriculture and Farmers Welfare (PM-KISAN Cell)"

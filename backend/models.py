@@ -7,7 +7,7 @@ from typing import Any
 from sqlalchemy import JSON, Boolean, DateTime, Enum as SqlEnum, String, Text
 from sqlalchemy.orm import Mapped, mapped_column
 
-from app.database import Base
+from backend.database import Base
 
 
 def utc_now() -> datetime:

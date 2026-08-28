@@ -4,22 +4,22 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.database import get_db
-from app.models import (
+from backend.database import get_db
+from backend.models import (
     STATUS_MESSAGES,
     Case,
     CaseStatus,
     CitizenConfirmation,
     compute_chain_hash,
 )
-from app.schemas import (
+from backend.schemas import (
     CaseCreate,
     CaseResponse,
     CaseStatusResponse,
     ConfirmationRequest,
     ConfirmationResponse,
 )
-from app.services.appeal_generator import generate_appeal
+from backend.services.appeal_generator import generate_appeal
 
 
 router = APIRouter(prefix="/cases", tags=["cases"])

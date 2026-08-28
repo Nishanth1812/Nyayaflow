@@ -3,9 +3,9 @@ import re
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
-from app.models import Case, CaseStatus, CitizenConfirmation, GrievanceCategory
-from app.seed import seed_database
-from app.services.diagnostic_engine import diagnose_category
+from backend.models import Case, CaseStatus, CitizenConfirmation, GrievanceCategory
+from backend.seed import seed_database
+from backend.services.diagnostic_engine import diagnose_category
 
 
 def test_seed_inserts_five_cases_only_once(db_session: Session) -> None:

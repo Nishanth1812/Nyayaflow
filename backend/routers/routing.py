@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
-from app.schemas import RoutingRequest, RoutingResponse
-from app.services.routing_engine import route_issue
+from backend.schemas import RoutingRequest, RoutingResponse
+from backend.services.routing_engine import route_issue
 
 
 router = APIRouter(tags=["routing"])

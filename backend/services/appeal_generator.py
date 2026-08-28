@@ -1,6 +1,6 @@
 from datetime import UTC, datetime
 
-from app.models import Case, CitizenConfirmation
+from backend.models import Case, CitizenConfirmation
 
 
 def _parse_timestamp(value: str) -> datetime:

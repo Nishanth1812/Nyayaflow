@@ -22,13 +22,19 @@ data/
 
 # Deployment and frontend output
 .vercel/
+node_modules/
+.next/
+out/
+coverage/
+.turbo/
+*.tsbuildinfo
 
+# Local agent configuration
+.opencode/
+
+# Keep ignoring stale nested frontend workspaces if they exist locally.
 web/node_modules/
 web/.next/
-web/out/
-web/coverage/
-web/.turbo/
-*.tsbuildinfo
 
 # Logs and local machine files
 *.log

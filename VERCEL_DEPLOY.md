@@ -1,43 +1,42 @@
 # Deploying NyayaFlow to Vercel (Frontend + Backend Together)
 
 This repo is ready for a single Vercel project that hosts:
-- **Next.js frontend** (`web/`) via `@vercel/next` builder
-- **FastAPI backend** (`app/` via `api/index.py`) via `@vercel/python`
+- **Next.js frontend** (`src/`) via Vercel's native Next.js detection
+- **FastAPI backend** (`backend/` via `api/index.py`) via Vercel Functions
 
 ## How it works
 
 ```
 Browser → Vercel Edge
         ├─ /health, /cases, /diagnose, /route, /diagnostic-rules, /metrics, /evidence-check, /static/*, /api/* → api/index.py (FastAPI)
-        └─ /* (everything else, including /, /_next/*) → web/* (Next.js)
+        └─ /* (everything else, including /, /_next/*) → root Next.js app
 ```
 
-- `vercel.json` (`H:\Personal\Hackathons\NyayaFlow\vercel.json:1`) declares both builds and routes.
-- `api/index.py` (`H:\Personal\Hackathons\NyayaFlow\api\index.py:1`) re-exports `app.main:app`.
-- `app/database.py` (`H:\Personal\Hackathons\NyayaFlow\app\database.py:1`) auto-switches SQLite path to `/tmp/nyayaflow.db` when `VERCEL=1` (ephemeral filesystem).
-- `app/main.py` (`H:\Personal\Hackathons\NyayaFlow\app\main.py:1`) allows `https://*.vercel.app` preview deployments via `ALLOW_ORIGIN_REGEX`.
-- `web/lib/api.ts` (`H:\Personal\Hackathons\NyayaFlow\web\lib\api.ts:14`) uses `NEXT_PUBLIC_API_BASE=""` for same-origin prod fetch.
-- `web/next.config.ts` (`H:\Personal\Hackathons\NyayaFlow\web\next.config.ts:1`) proxies to `http://localhost:8000` only in local dev.
+- `vercel.json` declares the Python function and API routes; the root `package.json` and `src/` app are detected as Next.js.
+- `api/index.py` re-exports `backend.main:app`.
+- `backend/database.py` auto-switches SQLite path to `/tmp/nyayaflow.db` when `VERCEL=1` (ephemeral filesystem).
+- `backend/main.py` allows `https://*.vercel.app` preview deployments via `ALLOW_ORIGIN_REGEX`.
+- `src/lib/api.ts` uses same-origin API calls in production and `http://localhost:8000` for local development.
+- `next.config.ts` proxies to `http://localhost:8000` only in local dev.
 
 ## One-time setup
 
 1. **Push to GitHub**
    ```bash
-   git init
-   git add .
+   git add -A
    git commit -m "nyayaflow: vercel ready"
-   git push origin main
+   git push origin master
    ```
 
 2. **Import to Vercel**
    - https://vercel.com/new → Import GitHub repo
-   - Framework Preset: **Other** (vercel.json overrides)
-   - Root Directory: `./` (keep default; vercel.json handles `web/` via builds)
+   - Framework Preset: **Next.js**
+   - Root Directory: `./` (keep default)
 
 3. **Environment Variables (Vercel Dashboard → Settings → Environment Variables)**
    | Name | Value | Notes |
    |------|-------|-------|
-   | `NEXT_PUBLIC_API_BASE` | `""` (empty string) | Frontend uses same-origin → `vercel.json` routes to Python |
+   | `NEXT_PUBLIC_API_BASE` | Leave unset | Production defaults to same-origin API routes; local development uses `http://localhost:8000` |
    | `NYAYAFLOW_DATABASE_URL` | `sqlite:////tmp/nyayaflow.db` or `postgresql+psycopg://...` | For production, use Neon/Supabase Postgres; otherwise `/tmp` with seeding each cold start |
    | `NYAYAFLOW_CORS_ORIGINS` | `https://your-domain.vercel.app,http://localhost:3000` | Auto-adds `VERCEL_URL` |
    | `NYAYAFLOW_LOG_LEVEL` | `INFO` | Optional |
@@ -45,7 +44,7 @@ Browser → Vercel Edge
    > `VERCEL` and `VERCEL_URL` are injected automatically — do not set manually.
 
 4. **Deploy**
-   - Click Deploy. Vercel builds both `api/index.py` and `web/`.
+   - Click Deploy. Vercel builds the root Next.js app and the root Python function as one deployment.
    - Visit `https://your-project.vercel.app` → Next.js UI.
    - `https://your-project.vercel.app/health` → `{"status":"ok","service":"NyayaFlow-engine"}` from FastAPI.
 
@@ -53,9 +52,9 @@ Browser → Vercel Edge
 
 | | Local | Vercel |
 |---|---|---|
-| Frontend | `cd web && npm run dev` (:3000) | Built via `web/package.json` builder |
-| Backend | `uv run uvicorn app.main:app --reload` (:8000) | `api/index.py` serverless |
-| API base | `NEXT_PUBLIC_API_BASE=http://localhost:8000` | `NEXT_PUBLIC_API_BASE=""` (relative) |
+| Frontend | `npm run dev` (:3000) | Built from the root Next.js app |
+| Backend | `uv run uvicorn backend.main:app --reload` (:8000) | `api/index.py` serverless |
+| API base | `NEXT_PUBLIC_API_BASE=http://localhost:8000` or automatic localhost default | Same-origin relative requests |
 | DB | `./nyayaflow.db` (persistent) | `/tmp/nyayaflow.db` (ephemeral) or Postgres if `NYAYAFLOW_DATABASE_URL` set |
 | CORS | localhost | `*.vercel.app` via regex |
 
@@ -68,7 +67,6 @@ uv run python -m pytest -v   # 59 passed
 uv run python -c "from api.index import app; print(app.title)"
 
 # Frontend
-cd web
 npm install
 npm run typecheck
 npm run build   # or NEXT_PUBLIC_API_BASE="" npm run build for prod simulation
@@ -86,10 +84,9 @@ Vercel ephemeral SQLite loses data on cold starts (re-seeded via `seed_database`
 
 - **500 on `/health`**: Check Vercel Function Logs → Python runtime `python3.12` mismatch? Ensure `runtime.txt` = `python-3.12` and `requirements.txt` at root.
 - **CORS error in preview**: Ensure `NYAYAFLOW_CORS_ORIGIN_REGEX` is `https://.*\.vercel\.app` (default when `VERCEL=1`) or set explicitly.
-- **Next.js 404 for `_next` assets**: Ensure `vercel.json` routes fallback `/(.*) → web/$1` is last.
+- **Next.js 404 for `_next` assets**: Ensure the Vercel project root is `./` and no legacy `builds` configuration is present.
 - **DB locked**: SQLite on `/tmp` is per-instance; use Postgres for concurrent writes.
 
-## Why both builds in one `vercel.json`?
+## Why the app is at the repository root?
 
-- `builds` with `@vercel/python` + `@vercel/next` is the documented pattern for FastAPI + Next.js monorepos (single project, two runtimes).
-- Modern `functions` + `rewrites` + `buildCommand` approach also works if you prefer to set Root Directory to `web`; see `vercel.json` comments.
+Vercel can auto-detect a root Next.js app and root `api/` Python functions in one project. Keeping both runtimes in the native root layout avoids the legacy `builds` configuration that triggers immutable static-upload errors.

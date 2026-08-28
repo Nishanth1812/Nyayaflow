@@ -1,9 +1,9 @@
 from fastapi import APIRouter
 
-from app.models import GrievanceCategory
-from app.schemas import DiagnosticRulesResponse, RoutingResponse
-from app.services.diagnostic_engine import DIAGNOSTIC_RULES
-from app.services.routing_engine import route_issue
+from backend.models import GrievanceCategory
+from backend.schemas import DiagnosticRulesResponse, RoutingResponse
+from backend.services.diagnostic_engine import DIAGNOSTIC_RULES
+from backend.services.routing_engine import route_issue
 
 
 router = APIRouter(tags=["diagnostic-rules"])
