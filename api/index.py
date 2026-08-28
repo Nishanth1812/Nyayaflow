@@ -1,7 +1,7 @@
 """
 Vercel serverless entrypoint for NyayaFlow FastAPI backend.
 
-Vercel's Python runtime (python3.12) looks for an `app` variable in
+Vercel's Python runtime looks for an `app` variable in
 `api/index.py` and treats it as an ASGI application. All backend routes
 (`/health`, `/cases`, `/diagnose`, `/route`, etc.) are handled by the
 single FastAPI instance defined in `backend.main`.
