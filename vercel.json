@@ -1,29 +1,28 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "version": 2,
   "git": {
     "deploymentEnabled": {
       "*": false,
       "master": true
     }
   },
-  "routes": [
-    { "src": "/health", "dest": "api/index.py" },
-    { "src": "/openapi.json", "dest": "api/index.py" },
-    { "src": "/docs", "dest": "api/index.py" },
-    { "src": "/docs/(.*)", "dest": "api/index.py" },
-    { "src": "/redoc", "dest": "api/index.py" },
-    { "src": "/diagnose", "dest": "api/index.py" },
-    { "src": "/diagnose/(.*)", "dest": "api/index.py" },
-    { "src": "/route", "dest": "api/index.py" },
-    { "src": "/diagnostic-rules", "dest": "api/index.py" },
-    { "src": "/diagnostic-rules/(.*)", "dest": "api/index.py" },
-    { "src": "/cases", "dest": "api/index.py" },
-    { "src": "/cases/(.*)", "dest": "api/index.py" },
-    { "src": "/metrics", "dest": "api/index.py" },
-    { "src": "/evidence-check", "dest": "api/index.py" },
-    { "src": "/static/(.*)", "dest": "api/index.py" },
-    { "src": "/api/(.*)", "dest": "api/index.py" }
+  "rewrites": [
+    { "source": "/health", "destination": "/api/index.py" },
+    { "source": "/openapi.json", "destination": "/api/index.py" },
+    { "source": "/docs", "destination": "/api/index.py" },
+    { "source": "/docs/:path*", "destination": "/api/index.py" },
+    { "source": "/redoc", "destination": "/api/index.py" },
+    { "source": "/diagnose", "destination": "/api/index.py" },
+    { "source": "/diagnose/:path*", "destination": "/api/index.py" },
+    { "source": "/route", "destination": "/api/index.py" },
+    { "source": "/diagnostic-rules", "destination": "/api/index.py" },
+    { "source": "/diagnostic-rules/:path*", "destination": "/api/index.py" },
+    { "source": "/cases", "destination": "/api/index.py" },
+    { "source": "/cases/:path*", "destination": "/api/index.py" },
+    { "source": "/metrics", "destination": "/api/index.py" },
+    { "source": "/evidence-check", "destination": "/api/index.py" },
+    { "source": "/static/:path*", "destination": "/api/index.py" },
+    { "source": "/api/:path*", "destination": "/api/index.py" }
   ],
   "headers": [
     {
