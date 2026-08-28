@@ -82,7 +82,7 @@ Vercel ephemeral SQLite loses data on cold starts (re-seeded via `seed_database`
 
 ## Troubleshooting
 
-- **500 on `/health`**: Check Vercel Function Logs → Python runtime `python3.12` mismatch? Ensure `runtime.txt` = `python-3.12` and `requirements.txt` at root.
+- **500 on `/health`**: Check Vercel Function Logs and ensure the root `.python-version` contains `3.12`.
 - **CORS error in preview**: Ensure `NYAYAFLOW_CORS_ORIGIN_REGEX` is `https://.*\.vercel\.app` (default when `VERCEL=1`) or set explicitly.
 - **Next.js 404 for `_next` assets**: Ensure the Vercel project root is `./` and no legacy `builds` configuration is present.
 - **DB locked**: SQLite on `/tmp` is per-instance; use Postgres for concurrent writes.
