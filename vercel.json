@@ -1,11 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "version": 2,
-  "functions": {
-    "api/index.py": {
-      "runtime": "python3.12"
-    }
-  },
   "routes": [
     { "src": "/health", "dest": "api/index.py" },
     { "src": "/openapi.json", "dest": "api/index.py" },

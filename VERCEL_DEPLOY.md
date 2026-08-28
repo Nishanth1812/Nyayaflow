@@ -12,7 +12,7 @@ Browser → Vercel Edge
         └─ /* (everything else, including /, /_next/*) → root Next.js app
 ```
 
-- `vercel.json` declares the Python function and API routes; the root `package.json` and `src/` app are detected as Next.js.
+- `vercel.json` declares the API routes; Vercel auto-detects `api/index.py` as Python and the root `package.json`/`src/` app as Next.js.
 - `api/index.py` re-exports `backend.main:app`.
 - `backend/database.py` auto-switches SQLite path to `/tmp/nyayaflow.db` when `VERCEL=1` (ephemeral filesystem).
 - `backend/main.py` allows `https://*.vercel.app` preview deployments via `ALLOW_ORIGIN_REGEX`.
