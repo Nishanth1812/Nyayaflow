@@ -1,0 +1,19 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+nyayaflow.db
+*.db-journal
+
+# Next.js
+web/node_modules/
+web/.next/
+web/out/
+web/coverage/
+web/.turbo/
+web/*.tsbuildinfo

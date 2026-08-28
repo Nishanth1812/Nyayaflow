@@ -1,0 +1,16 @@
+{
+  "name": "NyayaFlow — Citizen Grievance & Appeal Platform",
+  "short_name": "NyayaFlow",
+  "description": "Explainable Indian Citizen Grievance Redressal and Appeal Platform",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F8F6F0",
+  "theme_color": "#0F766E",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230F766E'/><text y='.75em' x='50%' text-anchor='middle' font-size='60'>⚖️</text></svg>",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}

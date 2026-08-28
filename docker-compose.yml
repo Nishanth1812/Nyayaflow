@@ -1,0 +1,13 @@
+services:
+  engine:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      NYAYAFLOW_DATABASE_URL: sqlite:////app/data/nyayaflow.db
+      NYAYAFLOW_CORS_ORIGINS: http://localhost:3000,http://localhost:5173
+      NYAYAFLOW_RATE_LIMIT_PER_MINUTE: "120"
+      NYAYAFLOW_LOG_LEVEL: INFO
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped

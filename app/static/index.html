@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="NyayaFlow — Deterministic and explainable citizen grievance redressal platform for Indian welfare schemes. Zero LLM hallucination risk.">
+  <meta name="theme-color" content="#0F766E">
+  <title>NyayaFlow — Explainable Indian Citizen Grievance & Appeal Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="manifest" href="/static/manifest.json">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚖️</text></svg>">
+</head>
+<body>
+
+  <!-- Accessibility: Skip to main content -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Indic Flag Gradient Bar -->
+  <div class="indic-tricolor-bar" role="presentation"></div>
+
+  <!-- Live vs Mocked Transparency Badge -->
+  <div class="transparency-badge" role="status" aria-label="System transparency indicator">
+    <div class="transparency-inner">
+      <span style="font-weight:800;font-size:0.75rem;letter-spacing:0.03em;">TRANSPARENCY</span>
+      <div class="transparency-items">
+        <span class="tbadge live">🟢 Live: Diagnostics, Routing, Evidence, Case DB, Appeals, Metrics API</span>
+        <span class="tbadge sim">🟡 Simulated: Dept. status progression, OTP verification</span>
+        <span class="tbadge mock">🔴 Mocked: Payment gateway, Aadhaar API, CPGRAMS submission</span>
+      </div>
+    </div>
+  </div>
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="brand-section">
+        <div class="brand-logo">NF</div>
+        <div class="brand-text">
+          <h1>NyayaFlow <span class="brand-badge">Build What Moves India</span></h1>
+          <p id="brandTagline">Explainable Indian Citizen Grievance & Appeal Redressal Engine</p>
+        </div>
+      </div>
+
+      <nav class="nav-tabs" role="tablist">
+        <button class="nav-tab active" data-view="assistant" id="tabAssistant">👤 Citizen Portal</button>
+        <button class="nav-tab" data-view="cases" id="tabCases">🏛️ Department Officer Desk</button>
+        <button class="nav-tab" data-view="metrics" id="tabMetrics">📊 Public Governance</button>
+      </nav>
+
+      <div class="nav-actions">
+        <button type="button" class="btn-sandbox" onclick="openHackathonModal()" style="font-size:0.8rem;padding:0.4rem 0.85rem;" id="btnPitchBrief">
+          🏆 Pitch & Rubric Brief
+        </button>
+        <select id="langSelect" class="lang-select" aria-label="Select Language">
+          <option value="en">English (EN)</option>
+          <option value="hi">हिंदी (Hindi)</option>
+          <option value="ta">தமிழ் (Tamil)</option>
+          <option value="te">తెలుగు (Telugu)</option>
+          <option value="kn">ಕನ್ನಡ (Kannada)</option>
+          <option value="ml">മലയാളം (Malayalam)</option>
+        </select>
+        <a href="/docs" target="_blank" class="btn-secondary" style="padding: 0.4rem 0.85rem; font-size: 0.8rem; text-decoration:none;" id="btnApiDocs">
+          ⚙️ API Docs
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Judge / Presenter 1-Click Sandbox Banner -->
+  <div class="judge-banner">
+    <div class="judge-banner-inner">
+      <div class="judge-title">
+        <span class="judge-tag">Judge Demo</span>
+        <div>
+          <span style="font-weight: 800;" id="judgeTitle">Judge & Presenter Sandbox:</span>
+          <span class="judge-text" id="judgeSubtitle">1-Click pre-loaded grievance personas for live evaluation</span>
+        </div>
+      </div>
+      <div class="persona-chips">
+        <button class="persona-chip" data-persona="ramesh" onclick="loadPersona('ramesh')">
+          🌾 Ramesh Kumar (PM-KISAN)
+        </button>
+        <button class="persona-chip" data-persona="priya" onclick="loadPersona('priya')">
+          💼 Priya Sharma (EPFO)
+        </button>
+        <button class="persona-chip" data-persona="anil" onclick="loadPersona('anil')">
+          🏢 Anil Verma (Income Tax)
+        </button>
+        <button class="persona-chip" data-persona="sunita" onclick="loadPersona('sunita')">
+          🎓 Sunita Devi (NSP Scholarship)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content Area -->
+  <main id="main-content" class="main-wrapper" role="main" aria-label="Grievance processing workspace">
+
+    <!-- VIEW 1: GRIEVANCE ASSISTANT WIZARD -->
+    <div id="view-assistant" class="view-panel active">
+
+      <!-- Stepper Header -->
+      <div class="stepper-header">
+        <div class="stepper-steps">
+          <div class="step-item active" data-step="1">
+            <div class="step-circle">1</div>
+            <div class="step-label" id="stepLabel1">Scheme</div>
+          </div>
+          <div class="step-item" data-step="2">
+            <div class="step-circle">2</div>
+            <div class="step-label" id="stepLabel2">Intake</div>
+          </div>
+          <div class="step-item" data-step="3">
+            <div class="step-circle">3</div>
+            <div class="step-label" id="stepLabel3">Diagnostics</div>
+          </div>
+          <div class="step-item" data-step="4">
+            <div class="step-circle">4</div>
+            <div class="step-label" id="stepLabel4">Routing</div>
+          </div>
+          <div class="step-item" data-step="5">
+            <div class="step-circle">5</div>
+            <div class="step-label" id="stepLabel5">Evidence</div>
+          </div>
+          <div class="step-item" data-step="6">
+            <div class="step-circle">6</div>
+            <div class="step-label" id="stepLabel6">Petition</div>
+          </div>
+          <div class="step-item" data-step="7">
+            <div class="step-circle">7</div>
+            <div class="step-label" id="stepLabel7">Tracker</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 1: SCHEME SELECTION -->
+      <div id="step-content-1" class="wizard-step-content card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title" id="startTitle">Citizen Grievance Portal</h2>
+            <p class="card-subtitle" id="startSubtitle">File a new grievance with ordered prerequisite diagnosis or track your existing case.</p>
+          </div>
+        </div>
+
+        <!-- Citizen Track Existing Case Search Bar -->
+        <div style="background:#F0FDFA;border:1.5px solid var(--primary);border-radius:var(--radius-md);padding:1rem 1.25rem;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
+          <div style="display:flex;align-items:center;gap:0.75rem;">
+            <span style="font-size:1.5rem;">🔍</span>
+            <div>
+              <div style="font-weight:800;font-size:0.92rem;color:var(--primary-dark);" id="trackCaseTitle">Already filed a complaint?</div>
+              <div style="font-size:0.78rem;color:var(--text-muted);" id="trackCaseSubtitle">Enter your Case ID to check live status, SLA countdown, or confirm payment receipt.</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;">
+            <input type="number" id="lookupCaseId" placeholder="e.g. 1, 2, 3..." class="form-input" style="width:140px;padding:0.45rem 0.75rem;font-size:0.85rem;" min="1">
+            <button class="btn-primary" onclick="lookupCitizenCase()" style="padding:0.45rem 1rem;font-size:0.85rem;" id="btnTrackLookup">Track My Case ➔</button>
+          </div>
+        </div>
+
+        <h3 style="font-size:1.05rem;font-weight:800;margin-bottom:0.75rem;" id="selectSchemeHeading">Or Select a Scheme to File a New Grievance:</h3>
+
+        <div class="category-grid">
+          <div class="category-card" data-category="pm_kisan_payment_failure">
+            <div>
+              <div class="category-icon">🌾</div>
+              <h3 class="category-name" id="catTitle1">PM-KISAN Payment Failure</h3>
+              <p class="category-desc" id="catDesc1">₹2,000 installment stopped, NPCI Aadhaar bank mapping inactive, or land record mismatch.</p>
+            </div>
+            <span class="category-badge" id="catBadge1">Direct Benefit Transfer (DBT)</span>
+          </div>
+
+          <div class="category-card" data-category="epfo_claim_rejected">
+            <div>
+              <div class="category-icon">💼</div>
+              <h3 class="category-name" id="catTitle2">EPFO PF Claim Rejected</h3>
+              <p class="category-desc" id="catDesc2">Form 19/31 claim rejected due to name mismatch with Aadhaar, bank KYC, or missing exit date.</p>
+            </div>
+            <span class="category-badge" id="catBadge2">Social Security / EPFO</span>
+          </div>
+
+          <div class="category-card" data-category="income_tax_refund_delayed">
+            <div>
+              <div class="category-icon">🏢</div>
+              <h3 class="category-name" id="catTitle3">Income Tax Refund Delayed</h3>
+              <p class="category-desc" id="catDesc3">ITR refund pending beyond 60 days, Section 245 outstanding demand adjustment, or AIS mismatch.</p>
+            </div>
+            <span class="category-badge" id="catBadge3">Direct Taxes / CPC</span>
+          </div>
+
+          <div class="category-card" data-category="scholarship_nsp_payment_stuck">
+            <div>
+              <div class="category-icon">🎓</div>
+              <h3 class="category-name" id="catTitle4">NSP Scholarship Stuck</h3>
+              <p class="category-desc" id="catDesc4">National Scholarship Portal payment pending at Institute or State/District Nodal Officer validation.</p>
+            </div>
+            <span class="category-badge" id="catBadge4">Higher Education / DBT</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2: INTAKE -->
+      <div id="step-content-2" class="wizard-step-content card" style="display:none;">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title" id="intakeTitle">Describe Your Grievance</h2>
+            <p class="card-subtitle" id="intakeSubtitle">Provide details of your pending payment or entitlement.</p>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="complaintText" id="complaintLabel">Complaint Description / Issue Text</label>
+          <textarea id="complaintText" class="form-textarea" placeholder="Explain what happened (e.g. My 14th PM-KISAN installment has not arrived...)"></textarea>
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-top:0.5rem;flex-wrap:wrap;">
+            <button type="button" id="voiceInputBtn" class="voice-input-btn">🎙️ Live Voice Input</button>
+            <button type="button" id="voiceSampleBtn" class="btn-secondary" style="font-size:0.8rem;padding:0.4rem 0.85rem;" onclick="simulateVoiceText()">✨ Load Sample Audio</button>
+            <button type="button" class="btn-secondary" style="font-size:0.8rem;padding:0.4rem 0.85rem;background:#F1F5F9;" onclick="resetIntakeForm()">🔄 Clear Form</button>
+            <span id="voiceStatusIndicator" style="font-size:0.8rem;font-weight:600;color:var(--text-muted);"></span>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+          <div class="form-group">
+            <label class="form-label" for="beneficiaryName" id="nameLabel">Citizen / Beneficiary Name</label>
+            <input type="text" id="beneficiaryName" class="form-input" placeholder="e.g. Ramesh Kumar">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="beneficiaryId" id="idLabel">Beneficiary / Registration Reference</label>
+            <input type="text" id="beneficiaryId" class="form-input" placeholder="e.g. PMK-UP-2024-884912 / UAN / PAN">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="stateSelect" id="stateLabel">State / UT</label>
+            <select id="stateSelect" class="form-select">
+              <option value="Uttar Pradesh">Uttar Pradesh</option>
+              <option value="Karnataka">Karnataka</option>
+              <option value="Delhi">Delhi</option>
+              <option value="Bihar">Bihar</option>
+              <option value="Maharashtra">Maharashtra</option>
+              <option value="Tamil Nadu">Tamil Nadu</option>
+              <option value="Kerala">Kerala</option>
+              <option value="Andhra Pradesh">Andhra Pradesh</option>
+              <option value="Telangana">Telangana</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="lastPaymentDate" id="dateLabel">Last Successful Payment Date</label>
+            <input type="date" id="lastPaymentDate" class="form-input" value="2024-03-15">
+          </div>
+        </div>
+
+        <div class="btn-group">
+          <button class="btn-secondary" onclick="goToStep(1)" id="btnIntakeBack">⬅ Back</button>
+          <button class="btn-primary" onclick="goToStep(3)" id="btnIntakeContinue">Continue to Diagnostic Checks ➔</button>
+        </div>
+      </div>
+
+      <!-- STEP 3: ORDERED DETERMINISTIC DIAGNOSTICS -->
+      <div id="step-content-3" class="wizard-step-content card" style="display:none;">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title" id="diagTitle">Deterministic Prerequisite Diagnostics</h2>
+            <p class="card-subtitle" id="diagSubtitle">Ordered verification tree ensuring all prerequisite conditions are met before official department routing.</p>
+          </div>
+        </div>
+
+        <div id="diagnosticTreeContainer" class="diag-tree-container">
+          <!-- Populated dynamically by app.js -->
+        </div>
+
+        <div id="diagSummaryBox"></div>
+
+        <div class="btn-group">
+          <button class="btn-secondary" onclick="goToStep(2)" id="btnDiagBack">⬅ Back</button>
+          <button class="btn-primary" onclick="goToStep(4)" id="btnDiagContinue">Continue to Routing ➔</button>
+        </div>
+      </div>
+
+      <!-- STEP 4: EXPLAINABLE INTELLIGENT ROUTING -->
+      <div id="step-content-4" class="wizard-step-content card" style="display:none;">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title" id="routingTitle">Explainable Department Routing</h2>
+            <p class="card-subtitle" id="routingSubtitle">Transparent rule engine mapping your grievance to the designated Central/State Ministry.</p>
+          </div>
+        </div>
+
+        <div id="routingResultContainer">
+          <!-- Populated dynamically -->
+        </div>
+
+        <div class="btn-group">
+          <button class="btn-secondary" onclick="goToStep(3)" id="btnRoutingBack">⬅ Back</button>
+          <button class="btn-primary" onclick="goToStep(5)" id="btnRoutingContinue">Continue to Evidence Checklist ➔</button>
+        </div>
+      </div>
+
+      <!-- STEP 5: EVIDENCE READINESS METER -->
+      <div id="step-content-5" class="wizard-step-content card" style="display:none;">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title" id="evidenceTitle">Evidence Completeness & Document Readiness</h2>
+            <p class="card-subtitle" id="evidenceSubtitle">Check mandatory and supporting documents to avoid preliminary rejection by the department.</p>
+          </div>
+        </div>
+
+        <div class="evidence-meter">
+          <div>
+            <div style="font-size:0.75rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;" id="readinessScoreLabel">Readiness Score</div>
+            <div id="evidenceMeterPercent" class="meter-percent">50%</div>
+          </div>
+          <div class="meter-bar-container">
+            <div id="evidenceMeterFill" class="meter-fill" style="width: 50%;"></div>
+          </div>
+        </div>
+
+        <div id="evidenceChecklist">
+          <!-- Populated dynamically -->
+        </div>
+
+        <div class="btn-group">
+          <button class="btn-secondary" onclick="goToStep(4)" id="btnEvidenceBack">⬅ Back</button>
+          <button class="btn-primary" onclick="goToStep(6)" id="btnEvidenceContinue">Generate Official Petition ➔</button>
+        </div>
+      </div>
+
+      <!-- STEP 6: FORMAL PETITION & SUBMIT -->
+      <div id="step-content-6" class="wizard-step-content card" style="display:none;">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title" id="petitionTitle">Official Citizen Grievance Petition</h2>
+            <p class="card-subtitle" id="petitionSubtitle">Standardized legal grievance draft ready for submission to CPGRAMS / Department Portal.</p>
+          </div>
+          <button class="btn-secondary" onclick="copyPetitionText()" id="btnCopyPetition">📋 Copy Petition</button>
+        </div>
+
+        <div style="position:relative;">
+          <pre id="petitionPreviewText" class="petition-preview">Loading petition draft...</pre>
+          <div class="petition-watermark">NyayaFlow Formal Petition</div>
+        </div>
+
+        <div class="btn-group">
+          <button class="btn-secondary" onclick="goToStep(5)" id="btnPetitionBack">⬅ Back</button>
+          <button id="submitCaseBtn" class="btn-primary" onclick="submitCase()">Submit & Track in Engine ➔</button>
+        </div>
+      </div>
+
+      <!-- STEP 7: CASE TRACKER & APPEAL STUDIO -->
+      <div id="step-content-7" class="wizard-step-content card" style="display:none;">
+        <div id="trackingHeader" class="card-header">
+          <!-- Populated dynamically -->
+        </div>
+
+        <div id="plainStatusBox" style="margin-bottom: 1.5rem;"></div>
+
+        <!-- SLA Compliance Timer -->
+        <div id="slaTimerContainer"></div>
+
+        <!-- SHA-256 Audit Hash Chain -->
+        <div id="auditHashContainer"></div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;">
+          <h3 style="font-size:1.1rem;font-weight:800;" id="timelineTitle">Departmental Audit Timeline</h3>
+          <span style="font-size:0.8rem;color:var(--text-muted);" id="timelineSubtitle">Immutable hash-chained timestamps</span>
+        </div>
+
+        <div id="caseTimelineContainer" class="timeline">
+          <!-- Populated dynamically -->
+        </div>
+
+        <!-- PROMINENT BOTTOM ADVANCE / REDRESSAL ACTION CARD -->
+        <div id="advanceActionCard" style="margin-top:2rem;">
+          <!-- Dynamically populated based on status: Advance Status Button OR Citizen Redressal Prompt -->
+        </div>
+
+        <!-- Appeal Draft Box (Appears when citizen confirms 'No') -->
+        <div id="appealDraftContainer"></div>
+
+        <!-- What Happens Next (Post-Appeal) -->
+        <div id="whatHappensNext" style="display:none;margin-top:1.5rem;">
+          <div style="background:linear-gradient(135deg,#FFFBEB 0%,#FEF3C7 100%);border:1.5px solid var(--warning);border-radius:var(--radius-lg);padding:1.25rem 1.5rem;">
+            <div style="font-size:0.75rem;font-weight:800;text-transform:uppercase;color:var(--warning);letter-spacing:0.05em;">📋 What Happens Next</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0.75rem;margin-top:0.75rem;">
+              <button class="btn-secondary" onclick="exportPetitionPdf()" style="text-align:left;padding:0.75rem;">
+                <div style="font-weight:800;">📄 Download as PDF</div>
+                <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.15rem;">Print-ready for physical submission</div>
+              </button>
+              <button class="btn-secondary" onclick="copyAppealText()" style="text-align:left;padding:0.75rem;">
+                <div style="font-weight:800;">📋 Copy to Clipboard</div>
+                <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.15rem;">Paste into CPGRAMS portal</div>
+              </button>
+              <button class="btn-secondary" onclick="showToast('30-day follow-up reminder set (simulated)')" style="text-align:left;padding:0.75rem;">
+                <div style="font-weight:800;">🔔 Set 30-Day Reminder</div>
+                <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.15rem;">Follow up if no response</div>
+              </button>
+              <button class="btn-secondary" onclick="switchView('metrics'); document.querySelectorAll('.nav-tab').forEach(t=>t.classList.toggle('active', t.dataset.view==='metrics'));" style="text-align:left;padding:0.75rem;">
+                <div style="font-weight:800;">📊 View Governance Metrics</div>
+                <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.15rem;">See the disposal-vs-resolution gap</div>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-group" style="margin-top:2rem; justify-content:space-between;">
+          <button class="btn-secondary" onclick="goToStep(1)" id="btnNewGrievance">➕ File Another Grievance</button>
+          <button class="btn-secondary" onclick="exportPetitionPdf()" id="btnExportPdf">📄 Export PDF</button>
+          <button class="btn-secondary" onclick="switchView('cases'); document.querySelectorAll('.nav-tab').forEach(t=>t.classList.toggle('active', t.dataset.view==='cases'));" id="btnViewExplorer">
+            📂 View All Cases in Explorer
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- VIEW 2: DEPARTMENT OFFICER DESK (WITH GOV SSO GATE) -->
+    <div id="view-cases" class="view-panel card">
+
+      <!-- Officer Auth Gate (Shown when logged out) -->
+      <div id="officerAuthGate" style="max-width:560px;margin:2rem auto;padding:2rem;background:#FAFAF8;border:1.5px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-md);">
+        <div style="text-align:center;margin-bottom:1.5rem;">
+          <div style="font-size:2.5rem;margin-bottom:0.5rem;">🏛️</div>
+          <div style="font-size:0.75rem;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:0.05em;">Government of India · CPGRAMS / MeriPehchaan SSO</div>
+          <h2 style="font-size:1.3rem;font-weight:900;color:var(--text-main);margin-top:0.25rem;">Nodal Redressal Officer Secure Login</h2>
+          <p style="font-size:0.82rem;color:var(--text-muted);margin-top:0.25rem;">Restricted to designated Central & State Ministry grievance nodal officers.</p>
+        </div>
+
+        <form id="officerLoginForm" onsubmit="event.preventDefault(); handleOfficerLogin();">
+          <div class="form-group" style="margin-bottom:1rem;">
+            <label class="form-label" for="officerEmail">Official Gov.in Email ID</label>
+            <input type="email" id="officerEmail" class="form-input" placeholder="e.g. officer.pmkisan@gov.in" value="officer.pmkisan@gov.in" required>
+          </div>
+
+          <div class="form-group" style="margin-bottom:1.25rem;">
+            <label class="form-label" for="officerPassword">SSO Password / Token</label>
+            <input type="password" id="officerPassword" class="form-input" value="GovtOfficer@2026" required>
+          </div>
+
+          <button type="submit" class="btn-primary" style="width:100%;padding:0.75rem;font-size:0.95rem;justify-content:center;">
+            🔒 Secure Officer Login ➔
+          </button>
+        </form>
+
+        <div style="margin-top:1.5rem;padding-top:1.25rem;border-top:1px solid var(--border);">
+          <div style="font-size:0.75rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;margin-bottom:0.5rem;text-align:center;">
+            ⚡ 1-Click Demo Officer Logins (For Judges & Presenters)
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0.5rem;">
+            <button type="button" class="btn-secondary" style="font-size:0.78rem;padding:0.45rem 0.65rem;text-align:left;" onclick="quickLoginOfficer('pm_kisan')">
+              🌾 <strong>PM-KISAN Officer</strong><br><span style="font-size:0.7rem;color:var(--text-muted);">Min. of Agriculture</span>
+            </button>
+            <button type="button" class="btn-secondary" style="font-size:0.78rem;padding:0.45rem 0.65rem;text-align:left;" onclick="quickLoginOfficer('epfo')">
+              💼 <strong>EPFO Commissioner</strong><br><span style="font-size:0.7rem;color:var(--text-muted);">Regional PF Office</span>
+            </button>
+            <button type="button" class="btn-secondary" style="font-size:0.78rem;padding:0.45rem 0.65rem;text-align:left;" onclick="quickLoginOfficer('incometax')">
+              🏢 <strong>CPC-ITR Officer</strong><br><span style="font-size:0.7rem;color:var(--text-muted);">Income Tax Grievance</span>
+            </button>
+            <button type="button" class="btn-secondary" style="font-size:0.78rem;padding:0.45rem 0.65rem;text-align:left;" onclick="quickLoginOfficer('nsp')">
+              🎓 <strong>NSP Nodal Officer</strong><br><span style="font-size:0.7rem;color:var(--text-muted);">National Scholarship</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Officer Authenticated Workspace (Shown when logged in) -->
+      <div id="officerWorkspace" style="display:none;">
+        <div class="card-header" style="background:#F0FDFA;border:1px solid var(--primary);border-radius:var(--radius-md);padding:1rem 1.25rem;margin-bottom:1.25rem;">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;width:100%;">
+            <div style="display:flex;align-items:center;gap:0.75rem;">
+              <span style="font-size:1.75rem;">🏛️</span>
+              <div>
+                <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;">
+                  <span id="officerNameBadge" style="font-weight:900;color:var(--primary-dark);font-size:1.05rem;">Dr. R. K. Singh</span>
+                  <span id="officerIdBadge" style="background:var(--primary);color:#fff;font-size:0.7rem;font-weight:800;padding:0.15rem 0.45rem;border-radius:4px;">ID: GOI-AGRI-8821</span>
+                </div>
+                <div id="officerDeptBadge" style="font-size:0.8rem;color:var(--text-muted);margin-top:0.15rem;">Ministry of Agriculture and Farmers Welfare (PM-KISAN Cell)</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:0.5rem;align-items:center;">
+              <button class="btn-secondary" onclick="loadCases()" id="btnRefreshCases">🔄 Refresh Queue</button>
+              <button class="btn-secondary" onclick="handleOfficerLogout()" style="background:#FEE2E2;color:#991B1B;border-color:#FCA5A5;">🔒 Logout</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Department & SLA Filters -->
+        <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.25rem;background:#F8FAFC;padding:0.85rem 1rem;border-radius:var(--radius-md);border:1px solid var(--border);align-items:center;">
+          <div style="display:flex;align-items:center;gap:0.5rem;">
+            <label style="font-size:0.8rem;font-weight:700;color:var(--text-muted);" for="filterDept">Department:</label>
+            <select id="filterDept" class="form-select" style="font-size:0.82rem;padding:0.35rem 0.65rem;" onchange="filterCases()">
+              <option value="all">All Central/State Departments</option>
+              <option value="PM-KISAN">🌾 PM-KISAN Cell</option>
+              <option value="EPFO">💼 EPFO Regional Office</option>
+              <option value="Income Tax">🏢 CPC-ITR (Income Tax)</option>
+              <option value="Scholarship">🎓 NSP Scholarship Cell</option>
+              <option value="MGNREGA">⛏️ MGNREGA Cell</option>
+            </select>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:0.5rem;">
+            <label style="font-size:0.8rem;font-weight:700;color:var(--text-muted);" for="filterStatus">Status:</label>
+            <select id="filterStatus" class="form-select" style="font-size:0.82rem;padding:0.35rem 0.65rem;" onchange="filterCases()">
+              <option value="all">All Statuses</option>
+              <option value="submitted">Submitted</option>
+              <option value="routed">Routed</option>
+              <option value="under_process">Under Process</option>
+              <option value="disposed">Disposed</option>
+              <option value="appealed">Appealed (Citizen No)</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="overflow-x:auto;">
+          <table class="cases-table">
+            <thead>
+              <tr>
+                <th id="thCaseId">Case ID</th>
+                <th id="thScheme">Scheme</th>
+                <th id="thComplaint">Complaint Snippet</th>
+                <th id="thDept">Routed Department</th>
+                <th id="thStatus">Status</th>
+                <th id="thConfirmation">Citizen Confirmation</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="casesTableBody">
+              <tr><td colspan="7" style="text-align:center;padding:2rem;">Loading department cases...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW 3: GOVERNANCE METRICS DASHBOARD -->
+    <div id="view-metrics" class="view-panel">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title" id="metricsTitle">Public Governance Transparency & Redressal Analytics</h2>
+            <p class="card-subtitle" id="metricsSubtitle">Real-time metrics demonstrating the critical gap between administrative disposal and true citizen resolution.</p>
+          </div>
+          <button class="btn-secondary" onclick="loadMetrics()" id="btnRefreshMetrics">🔄 Refresh Metrics</button>
+        </div>
+
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-label" id="metricLabel1">Total Grievances Filed</div>
+            <div id="metricTotalCases" class="metric-value">0</div>
+            <div class="metric-sub" id="metricSub1">Across 4 central welfare schemes</div>
+          </div>
+
+          <div class="metric-card accent">
+            <div class="metric-label" id="metricLabel2">Officially Disposed</div>
+            <div id="metricDisposedCases" class="metric-value">0</div>
+            <div class="metric-sub" id="metricSub2">Marked closed by departments</div>
+          </div>
+
+          <div class="metric-card danger">
+            <div class="metric-label" id="metricLabel3">Citizen Resolution Rate</div>
+            <div id="metricTrueResolution" class="metric-value">0%</div>
+            <div class="metric-sub" id="metricSub3">Citizens confirming real relief</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-label" id="metricLabel4">CPGRAMS First Appeals</div>
+            <div id="metricAppeals" class="metric-value">0</div>
+            <div class="metric-sub" id="metricSub4">Generated after premature disposal</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-label" id="metricLabel5">Routing Accuracy</div>
+            <div id="metricRoutingAccuracy" class="metric-value">100%</div>
+            <div class="metric-sub" id="metricSub5">Deterministic rule matching</div>
+          </div>
+        </div>
+
+        <h3 style="font-size:1.15rem;font-weight:800;margin:1.5rem 0 0.75rem 0;" id="metricsBreakdownTitle">Scheme Distribution Breakdown</h3>
+        <div id="metricsCategoryBreakdown" style="background:#FAFAF8;border:1px solid var(--border);border-radius:var(--radius-md);padding:1rem 1.25rem;">
+          <!-- Populated dynamically -->
+        </div>
+
+        <!-- Disposal vs Resolution Gap Chart -->
+        <div id="disposalGapChart">
+          <!-- Populated dynamically by loadMetrics -->
+        </div>
+      </div>
+    </div>
+
+  <!-- OFFICER DOCKET REVIEW MODAL -->
+  <div id="officerDocketModal" class="modal-backdrop" style="display:none;" onclick="if(event.target===this) closeOfficerModal()">
+    <div class="modal-content" style="max-width:760px;">
+      <button class="modal-close" onclick="closeOfficerModal()">✕</button>
+      <div id="officerModalBody">
+        <!-- Populated dynamically when reviewing a case -->
+      </div>
+    </div>
+  </div>
+
+  <!-- HACKATHON BRIEF MODAL -->
+  <div id="hackathonModal" class="modal-backdrop" style="display:none;" onclick="if(event.target===this) closeHackathonModal()">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeHackathonModal()">✕</button>
+      
+      <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.25rem;">
+        <span style="font-size:1.75rem;">🏆</span>
+        <div>
+          <h2 style="font-size:1.4rem;font-weight:900;line-height:1.2;" id="briefModalTitle">BuildWhatMovesIndia — Hackathon Submission Brief</h2>
+          <p style="font-size:0.85rem;color:var(--text-muted);" id="briefModalSubtitle">How NyayaFlow addresses every hackathon rubric requirement</p>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:1rem;">
+        <div style="background:#FAFAF8;border:1px solid var(--border);border-radius:var(--radius-md);padding:1rem;">
+          <h3 style="font-size:0.95rem;font-weight:800;color:var(--primary);" id="briefQ1">1. Who is facing the problem?</h3>
+          <p style="font-size:0.88rem;color:var(--text-main);margin-top:0.25rem;" id="briefA1">
+            Vulnerable citizens entitled to direct welfare benefits: rural farmers (PM-KISAN ₹2,000 DBT), formal workers (EPFO PF withdrawals), individual taxpayers (ITR refunds), and first-generation students (NSP scholarships).
+          </p>
+        </div>
+
+        <div style="background:#FAFAF8;border:1px solid var(--border);border-radius:var(--radius-md);padding:1rem;">
+          <h3 style="font-size:0.95rem;font-weight:800;color:var(--danger);" id="briefQ2">2. What is difficult about the current experience?</h3>
+          <p style="font-size:0.88rem;color:var(--text-main);margin-top:0.25rem;" id="briefA2">
+            <strong>"Disposal ≠ Resolution"</strong>: Portals close tickets without money reaching bank accounts. Prerequisite blockers (like inactive NPCI mapping or UAN name mismatches) are opaque to citizens.
+          </p>
+        </div>
+
+        <div style="background:#FAFAF8;border:1px solid var(--border);border-radius:var(--radius-md);padding:1rem;">
+          <h3 style="font-size:0.95rem;font-weight:800;color:var(--saffron-dark);" id="briefQ3">3. What did we change?</h3>
+          <p style="font-size:0.88rem;color:var(--text-main);margin-top:0.25rem;" id="briefA3">
+            Introduced <strong>deterministic ordered prerequisite diagnostics</strong>, <strong>explainable keyword department routing</strong>, and <strong>post-disposal citizen resolution verification with 1-click First Appeal drafting</strong>.
+          </p>
+        </div>
+
+        <div style="background:#FAFAF8;border:1px solid var(--border);border-radius:var(--radius-md);padding:1rem;">
+          <h3 style="font-size:0.95rem;font-weight:800;color:var(--success);" id="briefQ4">4. Why is NyayaFlow better?</h3>
+          <p style="font-size:0.88rem;color:var(--text-main);margin-top:0.25rem;" id="briefA4">
+            Shifts the core metric from administrative "Paper Disposal Rate" to "True Citizen Resolution Rate", with 0% LLM hallucination risk (100% deterministic rules).
+          </p>
+        </div>
+
+        <div style="background:#FAFAF8;border:1px solid var(--border);border-radius:var(--radius-md);padding:1rem;">
+          <h3 style="font-size:0.95rem;font-weight:800;color:var(--primary);" id="briefQ5">5. What works today vs what is synthetic/mocked?</h3>
+          <p style="font-size:0.88rem;color:var(--text-main);margin-top:0.25rem;" id="briefA5">
+            <strong>Real & Fully Functional</strong>: Full diagnostic engine, explainable router, evidence meter, SQLite case lifecycle database, appeal generator, and public analytics API.<br>
+            <strong>Synthetic Data</strong>: Privacy-safe mock citizen IDs & simulated department timeline transitions.
+          </p>
+        </div>
+
+        <div style="background:#FAFAF8;border:1px solid var(--border);border-radius:var(--radius-md);padding:1rem;">
+          <h3 style="font-size:0.95rem;font-weight:800;color:var(--primary-dark);" id="briefQ6">6. How does this scale safely to 1 Billion citizens?</h3>
+          <p style="font-size:0.88rem;color:var(--text-main);margin-top:0.25rem;" id="briefA6">
+            Ultra-lightweight architecture (runs on low-end servers, offline-ready), voice input for rural users, multi-lingual Indic support, and direct API interoperability with central CPGRAMS.
+          </p>
+        </div>
+      </div>
+
+      <div style="margin-top:1.5rem;text-align:right;">
+        <button class="btn-primary" onclick="closeHackathonModal()" id="btnCloseBrief">Close & Test Live Journey ➔</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
