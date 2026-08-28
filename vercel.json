@@ -22,8 +22,7 @@
     { "source": "/cases/:path*", "destination": "/api/index.py" },
     { "source": "/metrics", "destination": "/api/index.py" },
     { "source": "/evidence-check", "destination": "/api/index.py" },
-    { "source": "/static/:path*", "destination": "/api/index.py" },
-    { "source": "/api/:path*", "destination": "/api/index.py" }
+    { "source": "/static/:path*", "destination": "/api/index.py" }
   ],
   "headers": [
     {
