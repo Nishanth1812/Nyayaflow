@@ -32,6 +32,8 @@ Browser → Vercel Edge
    - https://vercel.com/new → Import GitHub repo
    - Framework Preset: **Next.js**
    - Root Directory: `./` (keep default)
+   - Settings → Environments → Production → Branch Tracking: `master`
+   - `vercel.json` disables automatic deployments for every branch except `master`.
 
 3. **Environment Variables (Vercel Dashboard → Settings → Environment Variables)**
    | Name | Value | Notes |
@@ -82,7 +84,7 @@ Vercel ephemeral SQLite loses data on cold starts (re-seeded via `seed_database`
 
 ## Troubleshooting
 
-- **500 on `/health`**: Check Vercel Function Logs and ensure the root `.python-version` contains `3.12`.
+- **Python build selects 3.14**: Ensure `pyproject.toml` keeps `requires-python = "~=3.12.0"`; this upper bound forces Vercel to use Python 3.12.
 - **CORS error in preview**: Ensure `NYAYAFLOW_CORS_ORIGIN_REGEX` is `https://.*\.vercel\.app` (default when `VERCEL=1`) or set explicitly.
 - **Next.js 404 for `_next` assets**: Ensure the Vercel project root is `./` and no legacy `builds` configuration is present.
 - **DB locked**: SQLite on `/tmp` is per-instance; use Postgres for concurrent writes.
