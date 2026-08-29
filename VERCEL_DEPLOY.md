@@ -1,7 +1,7 @@
 # Deploying NyayaFlow to Vercel (Frontend + Backend Together)
 
 This repo is ready for a single Vercel project that hosts:
-- **Next.js frontend** (`src/`) via Vercel's native Next.js detection
+- **Next.js frontend** (`web/`) via Vercel's native Next.js detection (set Root Directory to `web/` in Vercel settings, or ensure `package.json` at root points to the `web/` build)
 - **FastAPI backend** (`backend/` via `api/index.py`) via Vercel Functions
 
 ## How it works
@@ -12,11 +12,11 @@ Browser → Vercel Edge
         └─ /* (everything else, including /, /_next/*) → root Next.js app
 ```
 
-- `vercel.json` declares the API routes; Vercel auto-detects `api/index.py` as Python and the root `package.json`/`src/` app as Next.js.
+- `vercel.json` declares the API routes; Vercel auto-detects `api/index.py` as Python and the root `package.json`/`web/` app as Next.js.
 - `api/index.py` re-exports `backend.main:app`.
 - `backend/database.py` auto-switches SQLite path to `/tmp/nyayaflow.db` when `VERCEL=1` (ephemeral filesystem).
 - `backend/main.py` allows `https://*.vercel.app` preview deployments via `ALLOW_ORIGIN_REGEX`.
-- `src/lib/api.ts` uses same-origin API calls in production and `http://localhost:8000` for local development.
+- `web/lib/api.ts` uses same-origin API calls in production and `http://localhost:8000` for local development.
 - `next.config.ts` proxies to `http://localhost:8000` only in local dev.
 
 ## One-time setup
